@@ -3,7 +3,7 @@ from sklearn.svm import SVR
 import matplotlib.pyplot as plt
 from random import sample
 from sklearn.svm import SVR
-import svr
+from svr import JN_SVR
 
 num_total = 100
 num_train = 60
@@ -47,6 +47,24 @@ tr_target = np.delete(target, v_indices, 0)
 
 print("Data: ", str(len(tr_data)), str(len(v_data)), str(len(te_data)))
 print("Target: ", str(len(tr_target)), str(len(v_target)), str(len(te_target)))
+print("test shape : \n" ,  te_target[:40].shape)
+print("test: \n" ,  te_target[:40])
+
+
+#USING OUR OWN IMPLEMENTATION
+SVR_MODEL = JN_SVR(2 , 1e3)
+SVR_MODEL.fit(tr_data[:40] , tr_target[:40])
+y_p = SVR_MODEL.predict(te_data[:40])
+
+#show time
+lw = 2
+plt.scatter([i for i in range(len(te_target[:40]))],te_target[:40] , color='darkorange', label='data')
+plt.plot([i for i in range(len(y_p))], y_p, color='red', label='Polynomial model')
+plt.xlabel('data')
+plt.ylabel('target')
+plt.title('Support Vector Regression')
+plt.legend()
+plt.show()
 
 
 
@@ -54,11 +72,11 @@ print("Target: ", str(len(tr_target)), str(len(v_target)), str(len(te_target)))
 
 
 svr_poly = SVR(kernel='poly', C=1e3, degree=2)
-y_poly = svr_poly.fit(tr_data, tr_target).predict(te_data)
+y_poly = svr_poly.fit(tr_data[:40] , tr_target[:40]).predict(te_data[:40])
 
 lw = 2
-plt.scatter(X, y, color='darkorange', label='data')
-plt.plot(X, y_poly, color='cornflowerblue', lw=lw, label='Polynomial model')
+plt.scatter([i for i in range(len(te_target[:40]))], te_target[:40], color='darkorange', label='data')
+plt.plot( [i for i in range(len(y_poly))], y_poly, color='cornflowerblue', lw=lw, label='Polynomial model')
 plt.xlabel('data')
 plt.ylabel('target')
 plt.title('SICKIT LEARN Support Vector Regression')
@@ -66,20 +84,6 @@ plt.legend()
 plt.show()
 
 
-#USING OUR OWN IMPLEMENTATION
-SVR_MODEL = JN_SVR(2 , 1e3)
-SVR_MODEL.fit(tr_data , tr_target)
-y_p = SVR_MODEL.predict(te_data)
-
-#show time
-lw = 2
-plt.scatter(X, y, color='darkorange', label='data')
-plt.plot(X, y_p, color='red', label='Polynomial model')
-plt.xlabel('data')
-plt.ylabel('target')
-plt.title('Support Vector Regression')
-plt.legend()
-plt.show()
 
 
 
