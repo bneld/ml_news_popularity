@@ -15,6 +15,7 @@ class JN_Lasso:
 
     def predict(self, data):
         self.predicted = self.lassoReg.predict(data)
+        return self.predicted
 
     def plot(self):
         lw = 2

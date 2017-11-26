@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.linalg import inv
 class JN_SVR: 
 	def __init__(self, deg , r) :
 		self.reg = r 
