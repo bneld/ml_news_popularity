@@ -13,14 +13,14 @@ y[::5] += 3 * (0.5 - np.random.rand(8))
 
 # #############################################################################
 # Fit regression model
-lassoReg = Lasso(alpha=0.3, normalize=True).fit(X, y)
+lassoReg = Lasso(alpha=0.9).fit(X, y)
 predicted = lassoReg.predict(X)
 
 # #############################################################################
 # Look at the results
 lw = 2
 plt.scatter(X, y, color='darkorange', label='data')
-plt.plot(X, predicted, color='cornflowerblue', lw=lw, label='Polynomial model')
+plt.scatter(X, predicted, color='cornflowerblue', lw=lw, label='Polynomial model')
 plt.xlabel('data')
 plt.ylabel('target')
 plt.title('Support Vector Regression')

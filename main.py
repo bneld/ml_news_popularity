@@ -2,6 +2,8 @@ import numpy as np
 from sklearn.svm import SVR
 import matplotlib.pyplot as plt
 from random import sample
+from sklearn.svm import SVR
+import svr
 
 num_total = 100
 num_train = 60
@@ -16,6 +18,8 @@ predictor_indices = [ *range(1,6), 10, *range(38, 59) ]
 fileName = 'OnlineNewsPopularity.csv';
 news_articles = np.loadtxt(fileName, dtype = float, delimiter = ',', skiprows = 1, usecols=range(1,61) )
 
+
+# Generate sample data
 data = news_articles[:,predictor_indices]
 target = news_articles[:, target_index]
 
@@ -44,13 +48,36 @@ tr_target = np.delete(target, v_indices, 0)
 X = np.sort(5 * np.random.rand(num_total, 1), axis=0)
 y = np.sin(X).ravel()
 
-#get relevant featuers only 
-#create training/validatoin/test split 
+print("Data: ", str(len(tr_data)), str(len(v_data)), str(len(te_data)))
+print("Target: ", str(len(tr_target)), str(len(v_target)), str(len(te_target)))
 
-#build our own models 
+## USING SICKIT LEARN
 
-#build models using scikit-learn 
 
-#graph results + compute error 
+svr_poly = SVR(kernel='poly', C=1e3, degree=2)
+y_poly = svr_poly.fit(tr_data, tr_target).predict(te_data)
 
-#done
+lw = 2
+plt.scatter(X, y, color='darkorange', label='data')
+plt.plot(X, y_poly, color='cornflowerblue', lw=lw, label='Polynomial model')
+plt.xlabel('data')
+plt.ylabel('target')
+plt.title('SICKIT LEARN Support Vector Regression')
+plt.legend()
+plt.show()
+
+
+# USING OUR OWN IMPLEMENTATION
+SVR_MODEL = JN_SVR(2 , 1e3)
+SVR_MODEL.fit(tr_data , tr_target)
+y_p = SVR_MODEL.predict(te_data)
+
+#show time
+lw = 2
+plt.scatter(X, y, color='darkorange', label='data')
+plt.plot(X, y_p, color='red', label='Polynomial model')
+plt.xlabel('data')
+plt.ylabel('target')
+plt.title('Support Vector Regression')
+plt.legend()
+plt.show()
