@@ -24,8 +24,6 @@ num_val = num_total // 5
 num_te = num_total // 5
 num_tr = num_total - num_val - num_te
 
-print("", str(num_tr), str(num_val), str(num_te))
-
 # extract test data
 te_indices = sample(range(len(data)), num_te)
 te_data = data[te_indices]
@@ -37,12 +35,10 @@ target = np.delete(target, te_indices, 0)
 v_indices = sample(range(len(data)), num_val)
 v_data = data[v_indices]
 v_target = target[v_indices]
+
 # rest is for training
 tr_data = np.delete(data, v_indices, 0)
 tr_target = np.delete(target, v_indices, 0)
-
-print("Data: ", str(len(tr_data)), str(len(v_data)), str(len(te_data)))
-print("Target: ", str(len(tr_target)), str(len(v_target)), str(len(te_target)))
 
 # Generate sample data
 X = np.sort(5 * np.random.rand(num_total, 1), axis=0)
