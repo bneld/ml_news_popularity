@@ -46,18 +46,30 @@ tr_data = np.delete(data, v_indices, 0)
 tr_target = np.delete(target, v_indices, 0)
 
 # Generate sample data
-X = np.sort(5 * np.random.rand(num_total, 1), axis=0)
-y = np.sin(X).ravel()
+# X = np.sort(5 * np.random.rand(num_total, 1), axis=0)
+# y = np.sin(X).ravel()
 
 print("Data: ", str(len(tr_data)), str(len(v_data)), str(len(te_data)))
 print("Target: ", str(len(tr_target)), str(len(v_target)), str(len(te_target)))
 print("test shape : \n" ,  te_target[:40].shape)
 print("test: \n" ,  te_target[:40])
 
-lasso = JN_Lasso(alpha=0.3)
-lasso.fit(tr_data, tr_target)
-predicted = lasso.predict(tr_data)
-lasso.plot()
+alphas = [0.1*i for i in range(11)]
+mse = []
+for alpha in alphas:
+	lasso = JN_Lasso(alpha=alpha)
+	lasso.fit(tr_data[:100], tr_target[:100])
+	predicted = lasso.predict(tr_data[:100])
+	mse.append(lasso.mse())
+	# lasso.plot()
+
+lw = 2
+plt.plot(alphas, mse, color='cornflowerblue', lw=lw, label='')
+plt.xlabel('Alpha')
+plt.ylabel('MSE')
+plt.title('Lasso Regression')
+plt.legend()
+plt.show()
 
 #USING OUR OWN IMPLEMENTATION
 # SVR_MODEL = JN_SVR(2 , 1e3)
