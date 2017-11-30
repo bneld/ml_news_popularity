@@ -5,6 +5,8 @@ from random import sample
 from sklearn.svm import SVR
 from svr import JN_SVR
 from lr import JN_Lasso
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
 
 num_total = 100
 num_train = 60
@@ -33,6 +35,7 @@ num_tr = num_total - num_val - num_te
 te_indices = sample(range(len(data)), num_te)
 te_data = data[te_indices]
 te_target = target[te_indices]
+
 data = np.delete(data, te_indices, 0)
 target = np.delete(target, te_indices, 0)
 
@@ -72,6 +75,22 @@ plt.legend()
 plt.show()
 
 #USING OUR OWN IMPLEMENTATION
+# SVR_MODEL = JN_SVR(2 , 0.01)
+# SVR_MODEL.fit(tr_data[:40] , tr_target[:40])
+# y_p = SVR_MODEL.predict(tr_data[:40])
+
+
+# #show time
+# lw = 2
+# plt.scatter([i for i in range(len(te_target[:40]))],te_target[:40] , color='darkorange', label='data')
+# plt.plot([i for i in range(len(y_p))], y_p, color='red', label='Polynomial model')
+# plt.xlabel('data')
+# plt.ylabel('target')
+# plt.title('Support Vector Regression')
+# plt.legend()
+# plt.show()
+
+#USING OUR OWN IMPLEMENTATION
 # SVR_MODEL = JN_SVR(2 , 1e3)
 # SVR_MODEL.fit(tr_data[:40] , tr_target[:40])
 # y_p = SVR_MODEL.predict(te_data[:40])
@@ -99,3 +118,33 @@ plt.show()
 # plt.legend()
 # plt.show()
 
+## USING SICKIT LEARN
+
+# svr_poly = SVR(kernel='poly', C=1e3, degree=2)
+# y_poly = svr_poly.fit(tr_data[:40] , tr_target[:40]).predict(tr_data[:40])
+
+# lw = 2
+# plt.scatter([i for i in range(len(te_target[:40]))], te_target[:40], color='darkorange', label='data')
+# plt.plot( [i for i in range(len(y_poly))], y_poly, color='cornflowerblue', lw=lw, label='Polynomial model')
+# plt.xlabel('data')
+# plt.ylabel('target')
+# plt.title('SICKIT LEARN Support Vector Regression')
+# plt.legend()
+# plt.show()
+
+
+#MEASURING ERROR 
+# print("MEAN SQUARED ERROR")
+# print("Uing Scikit Learn : " , mean_squared_error(tr_target[:40] , y_poly))
+# print("Uing OUR IMPLEMENTATION : " , mean_squared_error( tr_target[:40], y_p))
+
+# print("MEAN ABSOLUTE ERROR")
+# print("Uing Scikit Learn : " , mean_absolute_error(tr_target[:40] , y_poly))
+# print("Uing OUR IMPLEMENTATION : " , mean_absolute_error(tr_target[:40], y_p))
+
+
+
+
+
+
+#done

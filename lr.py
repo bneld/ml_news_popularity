@@ -30,3 +30,4 @@ class JN_Lasso:
         plt.title('Lasso Regression')
         plt.legend()
         plt.show()
+    
