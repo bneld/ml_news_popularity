@@ -2,7 +2,6 @@ import numpy as np
 from sklearn.svm import SVR
 from sklearn.linear_model import Ridge 
 import matplotlib.pyplot as plt
-import seaborn as sns
 from random import sample
 from sklearn.svm import SVR
 from svr import JN_SVR
@@ -12,7 +11,7 @@ from sklearn.metrics import mean_absolute_error
 
 
 target_index = 59
-predictor_indices = [ 11, *range(44, 59) ]
+predictor_indices = [ *range(44, 59) ]
 
 #reading the csv file
 fileName = 'OnlineNewsPopularity.csv';
@@ -115,10 +114,9 @@ def makePlot(feature_number , actual , our_p , scikit_p, algorithm):
 	plt.scatter( x , actual , color ='blue' ,label ='Actual Number of shares')
 	plt.plot(x , our_p , color='red'  , label ='OUR ' +  algorithm)
 	plt.plot(x , scikit_p , color='red'  , label ='SKLEARN' +  algorithm)
-	plt.plot(te_data [;,feature_number] , )
 	plt.xlabel(predictors[feature_number])
 	plt.ylabel("Number of Shares")
 	plt.legend()
-	plt.title( "Number of Shares  vs " str(predictors[feature_number]))  
+	plt.title( "Number of Shares  vs " + str(predictors[feature_number]))  
 	plt.show()
 
