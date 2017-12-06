@@ -42,11 +42,16 @@ tr_target = np.delete(target, te_indices, 0)
 
 
 
+#SVR
+#USING OUR OWN IMPLEMENTATION
+SVR_MODEL = JN_SVR(2 , 0.001)
+SVR_MODEL.fit(tr_data , tr_target)
+y_p = SVR_MODEL.predict(te_data)
+
 #USING SCIKIT LEARN 
 svr_poly = SVR(kernel='poly', C=1e3, degree=2)
 y_poly = svr_poly.fit(tr_data,tr_target).predict(te_data)
-
-
+#MEASURING ERROR 
 print("SUPPORT VECTOR REGRESSION: ON TESTING DATA\n++++++++++++++++++++++++++++++++++++++++\n")
 print("MEAN SQUARED ERROR")
 print("Uing Scikit Learn : " , mean_squared_error(te_target , y_poly))
@@ -57,13 +62,7 @@ print("Uing Scikit Learn : " , mean_absolute_error(te_target , y_poly))
 print("Uing OUR IMPLEMENTATION : " , mean_absolute_error(te_target, y_p))
 
 
-
-
-
-
-
 #Ridge 
-
 #using our implementation 
 alpha = 0.01
 our_ridge = JN_Ridge(alpha=0.001)
