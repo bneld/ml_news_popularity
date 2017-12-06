@@ -12,7 +12,8 @@ class JN_SVR:
 	    i_matrix = np.identity(input_mat.shape[0])
 	    for i in range(1, k_mat.shape[0]) : 
 	        for j in range (1, k_mat.shape[0]) : 
-	            #Kernal 
+	            #Kernal  
+	            print("K Matrix ( " + str(i) + " , " + str(j) +") ")
 	            k = (np.sum((input_mat[i-1:i , : ]).T * input_mat[j-1:j , :]) ** degree)  + (1/c) * i_matrix[i-1][j-1]
 	#             k = ((np.sum((input_mat[i-1:i , : ]).T * input_mat[j-1:j , :]))  ** degree)  
 	            k_mat[i][j] = k
@@ -28,7 +29,6 @@ class JN_SVR:
 	def predict(self , input_data) : 
 	    k_mat= self.calc_K_Mat(input_data , self.degree ,self.reg ) 
 	    return np.matmul(self.alphas[1:].T , k_mat[1: , 1:]) + self.alphas[0]
-
 
 
 
