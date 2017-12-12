@@ -11,7 +11,7 @@ from sklearn.metrics import mean_absolute_error
 
 
 target_index = 59
-predictor_indices = [ *range(44, 59) ]
+predictor_indices = [ i for i in range(44, 59) ]
 
 #reading the csv file
 fileName = 'OnlineNewsPopularity.csv';
@@ -23,6 +23,11 @@ with open(fileName, 'r') as f:
     all_features = f.readline().split(',')
 
 predictors = [all_features[i] for i in predictor_indices]
+
+for i in predictors:
+	print (i)
+
+fjalkdsflkafjkl;asjf
 
 # data
 data = news_articles[:,predictor_indices]
@@ -59,12 +64,12 @@ y_poly = svr_poly.fit(tr_data , tr_target).predict(te_data)
 #MEASURING ERROR 
 print("SUPPORT VECTOR REGRESSION: ON TESTING DATA\n++++++++++++++++++++++++++++++++++++++++\n")
 print("MEAN SQUARED ERROR")
-print("Uing Scikit Learn : " , mean_squared_error(te_target , y_poly))
+print("Using Scikit Learn : " , mean_squared_error(te_target , y_poly))
 print("Uing OUR IMPLEMENTATION : " , mean_squared_error( te_target, y_p[1:]))
 
 print("MEAN ABSOLUTE ERROR")
-print("Uing Scikit Learn : " , mean_absolute_error(te_target , y_poly))
-print("Uing OUR IMPLEMENTATION : " , mean_absolute_error(te_target, y_p[1:]))
+print("Using Scikit Learn : " , mean_absolute_error(te_target , y_poly))
+print("Using OUR IMPLEMENTATION : " , mean_absolute_error(te_target, y_p[1:]))
 
 
 # #Ridge 

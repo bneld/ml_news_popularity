@@ -1,3 +1,5 @@
 OnlineNewsPopularity.csv
 .DS_Store
 __pycache__/
+lr.pyc
+svr.pyc
