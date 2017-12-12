@@ -14,7 +14,7 @@ class JN_SVR:
 		i_matrix = np.identity(input_mat.shape[0])
 		for i in range(1, k_mat.shape[0]) : 
 		    for j in range (1, k_mat.shape[0]) : 
-		    	if i % 500 == 0
+		    	if i % 500 == 0 : 
 		    		print("Fitting : K Matrix ( {} , {} )".format(i , j))
 		    	k = (np.sum((input_mat[i-1:i , : ]).T * input_mat[j-1:j , :]) ** degree)  + (1/c) * i_matrix[i-1][j-1]
 		    	k_mat[i][j] = k
@@ -35,8 +35,8 @@ class JN_SVR:
 		input_k_matrix[0][0] = 0 
 		for i in range(1, input_k_matrix.shape[0]):
 			for j in range(1, input_k_matrix.shape[1]):
-				if i % 500 == 0
-		    		print("Predicting : K Matrix ( {} , {} )".format(i , j))
+				if i % 500 == 0 : 
+					print("Predicting : K Matrix ( {} , {} )".format(i , j))
 				input_k_matrix[i][j] = (np.sum((input_data[i-1:i , : ]).T * self.training_data[j-1:j , :] ) ** self.degree)
 
 		return input_k_matrix

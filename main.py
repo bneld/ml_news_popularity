@@ -24,10 +24,7 @@ with open(fileName, 'r') as f:
 
 predictors = [all_features[i] for i in predictor_indices]
 
-for i in predictors:
-	print (i)
 
-fjalkdsflkafjkl;asjf
 
 # data
 data = news_articles[:,predictor_indices]
@@ -40,15 +37,15 @@ testing_data = data[te_indices]
 testing_data_target = target[te_indices] 
 
 
-te_data = testing_data[:40]
-te_target = testing_data_target[:40]
+te_data = testing_data
+te_target = testing_data_target
 
 
 training_data = np.delete(data, te_indices, 0)
 testing_data_target = np.delete(target, te_indices, 0)
 
-tr_data = training_data[:200]
-tr_target = testing_data_target[:200]
+tr_data = training_data
+tr_target = testing_data_target
 
 
 # 
