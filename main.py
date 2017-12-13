@@ -48,7 +48,7 @@ tr_data = training_data
 tr_target = testing_data_target
 
 
-# 
+# # 
 #SVR
 #USING OUR OWN IMPLEMENTATION
 SVR_MODEL = JN_SVR(2 , 0.1)
@@ -69,59 +69,77 @@ print("Using Scikit Learn : " , mean_absolute_error(te_target , y_poly))
 print("Using OUR IMPLEMENTATION : " , mean_absolute_error(te_target, y_p[1:]))
 
 
-# #Ridge 
-# #using our implementation 
-# alpha = 0.01
-# our_ridge = JN_Ridge(alpha=0.001)
-# our_ridge.fit(tr_data, tr_target)
-# our_ridge_predicted = our_ridge.predict(te_data)
+#Ridge 
+#using our implementation 
+alphas = np.arange(0, 1.0, 0.05)
+ridge_mse_list = np.zeros(len(alphas))
+num_iter = 100
+# alphas = [0.0001, 0.001, 0.01, 0.1, 0.5]
+min_alpha = sys.maxsize
+min_mse = sys.maxsize
 
-# #using scikit learn 
-# ridge_clf = Ridge(alpha = 0.001).fit(tr_data , tr_target)
-# sklearn_ridge_prediction = ridge_clf.predict(te_data)
+for i in range(num_iter):
+	print(i)
+	# get a random 20% for validation
+	v_indices = sample(range(len(data)), num_to_remove)
+	v_data = data[v_indices]
+	v_target = target[v_indices]
+	tr_data = np.delete(data, v_indices, 0)
+	tr_target = np.delete(target, v_indices, 0)
 
-# print("RIDGE REGRESSION: ON TESTING DATA\n++++++++++++++++++++++++++++++++++++++++\n")
-# print("MEAN SQUARED ERROR (MSE)")
-# print("Uing Scikit Learn : " , mean_squared_error(te_target , sklearn_ridge_prediction))
-# print("Uing OUR IMPLEMENTATION : " , mean_squared_error( te_target, our_ridge_predicted))
+	# try all alphas
+	for index, curr_alpha in enumerate(alphas):
+		curr_ridge = JN_Ridge(alpha=curr_alpha)
+		curr_ridge.fit(tr_data, tr_target)
+		curr_ridge_predicted = curr_ridge.predict(v_data)
+		curr_mse = mean_squared_error(v_target, curr_ridge_predicted)
+		ridge_mse_list[index] += curr_mse
 
-# print("MEAN ABSOLUTE ERROR (MAE)")
-# print("Uing Scikit Learn : " , mean_absolute_error(te_target , sklearn_ridge_prediction))
-# print("Uing OUR IMPLEMENTATION : " , mean_absolute_error(te_target, our_ridge_predicted))
+ridge_mse_list /= num_iter
+
+min_alpha = alphas[np.argmin(ridge_mse_list)]
+
+plt.plot(alphas, ridge_mse_list, label="MSE")
+plt.xlabel("Alpha")
+plt.ylabel("MSE")
+plt.legend()
+plt.title("Ridge Regression MSE vs Training Alpha")  
+plt.show()
+
+# use alpha with lowest MSE
+print("Min alpha = {}".format(min_alpha))
+our_ridge = JN_Ridge(alpha=min_alpha)
+our_ridge.fit(data, target)
+our_ridge_predicted = our_ridge.predict(te_data)
+
+#using scikit learn 
+ridge_clf = Ridge(alpha=min_alpha).fit(data, target)
+sklearn_ridge_prediction = ridge_clf.predict(te_data)
+
+print("RIDGE REGRESSION: ON TESTING DATA\n++++++++++++++++++++++++++++++++++++++++\n")
+print("MEAN SQUARED ERROR (MSE)")
+print("Using Scikit Learn : " , mean_squared_error(te_target , sklearn_ridge_prediction))
+print("Using OUR IMPLEMENTATION : " , mean_squared_error( te_target, our_ridge_predicted))
+
+print("MEAN ABSOLUTE ERROR (MAE)")
+print("Using Scikit Learn : " , mean_absolute_error(te_target , sklearn_ridge_prediction))
+print("Using OUR IMPLEMENTATION : " , mean_absolute_error(te_target, our_ridge_predicted))
+
+print("R-SQUARED SCORE")
+print("Using Scikit Learn : " , r2_score(te_target , sklearn_ridge_prediction))
+print("Using OUR IMPLEMENTATION : " , r2_score(te_target, our_ridge_predicted))
 
 
 
-
-
-# #LASSO REGRESSION
-# #our implementation
-# our_lasso = JN_Lasso(alpha=0.01)
-# our_lasso.fit(tr_data, tr_target)
-# our_lasso_predicted = our_lasso.predict(te_data)
-
-# #sklearn implementation
-# sklearn_lasso= Lasso(alpha=0.01, copy_X=True, normalize=True, max_iter=1000).fit(tr_data, tr_target)
-# sklearn_lasso_predicted = sklearn_lasso.predict(te_data)
-
-
-# print("LASSO REGRESSION: ON TESTING DATA\n++++++++++++++++++++++++++++++++++++++++\n")
-# print("MEAN SQUARED ERROR (MSE)")
-# print("Uing Scikit Learn : " , mean_squared_error(te_target , sklearn_lasso_predicted))
-# print("Uing OUR IMPLEMENTATION : " , mean_squared_error( te_target, our_lasso_predicted))
-
-# print("MEAN ABSOLUTE ERROR (MAE)")
-# print("Uing Scikit Learn : " , mean_absolute_error(te_target , sklearn_lasso_predicted))
-# print("Uing OUR IMPLEMENTATION : " , mean_absolute_error(te_target, our_lasso_predicted))
-
-
-def makePlot(feature_number , actual , our_p , scikit_p, algorithm): 
-	x = te_data[:,feature_number]
+def makePlot(feature_number , test , actual , our_p , scikit_p, algorithm): 
+	x = test[:,feature_number]
 	print(x.shape)
 	print(actual.shape)
 	plt.scatter( x , te_target , color ='orange' ,label ='Actual Number of shares')
 	plt.plot(x , our_p[1:] , color='blue'  , label ='OUR ' +  algorithm)
 	plt.plot(x , scikit_p , color='red'  , label ='SKLEARN' +  algorithm)
 	plt.xlabel(predictors[feature_number])
+	plt.ylim(0, 30000)
 	plt.ylabel("Number of Shares")
 	plt.legend()
 	plt.title( "Number of Shares  vs " + str(predictors[feature_number]))  
