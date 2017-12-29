@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from random import sample
 from sklearn.svm import SVR
 from svr import JN_SVR
-from lr import JN_Lasso
+
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
 
@@ -131,18 +131,23 @@ print("Using OUR IMPLEMENTATION : " , r2_score(te_target, our_ridge_predicted))
 
 
 
-def makePlot(feature_number , test , actual , our_p , scikit_p, algorithm): 
-	x = test[:,feature_number]
-	print(x.shape)
-	print(actual.shape)
-	plt.scatter( x , te_target , color ='orange' ,label ='Actual Number of shares')
-	plt.plot(x , our_p[1:] , color='blue'  , label ='OUR ' +  algorithm)
-	plt.plot(x , scikit_p , color='red'  , label ='SKLEARN' +  algorithm)
-	plt.xlabel(predictors[feature_number])
-	plt.ylim(0, 30000)
-	plt.ylabel("Number of Shares")
-	plt.legend()
-	plt.title( "Number of Shares  vs " + str(predictors[feature_number]))  
-	plt.show()
-	plt.gcf().clear()
+#SVR
+#USING OUR OWN IMPLEMENTATION
+SVR_MODEL = JN_SVR(2 , 0.1)
+SVR_MODEL.fit(tr_data , tr_target)
+y_p = SVR_MODEL.predict(te_data)
+
+#USING SCIKIT LEARN 
+svr_poly = SVR(kernel='poly', C=1e3, degree=2)
+y_poly = svr_poly.fit(tr_data , tr_target).predict(te_data)
+#MEASURING ERROR 
+print("SUPPORT VECTOR REGRESSION: ON TESTING DATA\n++++++++++++++++++++++++++++++++++++++++\n")
+print("MEAN SQUARED ERROR")
+print("Using Scikit Learn : " , mean_squared_error(te_target , y_poly))
+print("Uing OUR IMPLEMENTATION : " , mean_squared_error( te_target, y_p[1:]))
+
+print("MEAN ABSOLUTE ERROR")
+print("Using Scikit Learn : " , mean_absolute_error(te_target , y_poly))
+print("Using OUR IMPLEMENTATION : " , mean_absolute_error(te_target, y_p[1:]))
+
 
