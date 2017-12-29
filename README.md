@@ -1,4 +1,4 @@
-# Predicted Online News Popularity using ML 
+# Predicting Online News Popularity using ML 
 ----
 Using Support Vector Regression and Ridge Regression to predict the number of shares a news article will get once published.
 
@@ -16,7 +16,7 @@ We acquired our training from a public [dataset](http://archive.ics.uci.edu/ml/d
 
 ```
 Numpy 
-sklearn
+Scikit
 ```
 
 ### How to use? 
